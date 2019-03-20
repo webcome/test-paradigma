@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+    php:
+        image: endphasys/php7-fpm
+        volumes:
+            - ${SYMFONY_APP_PATH}:/var/www/symfony
+        ports:
+            - 9000:9000
+            - 9001:9001
+        networks:
+            - main
+    nginx:
+        image: endphasys/nginx
+        ports:
+            - 8081:80
+            - 80:80
+        volumes:
+            - ${SYMFONY_APP_PATH}:/var/www/symfony
+            - ${NGINX_LOG_PATH}:/var/log/nginx
+        networks:
+            main:
+                aliases:
+                    - test.local
+
+networks:
+    main:
